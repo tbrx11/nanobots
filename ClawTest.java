@@ -11,11 +11,13 @@ import com.qualcomm.robotcore.util.Range;
 
 
 
+
 @TeleOp(name="ClawTest", group="Linear Opmode")
 public class ClawTest extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+
     private Claw claw;
 
     @Override
@@ -27,7 +29,7 @@ public class ClawTest extends LinearOpMode {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         claw = new Claw(hardwareMap.get(Servo.class, "claw"),hardwareMap.get(Servo.class, "spinner"));
-
+                
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -35,7 +37,7 @@ public class ClawTest extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
+            
             //test claw
             if (gamepad1.right_trigger > 0) {
                 claw.clawOpen();
@@ -43,6 +45,8 @@ public class ClawTest extends LinearOpMode {
             if(gamepad1.left_trigger > 0) {
                 claw.clawClose();
             }
+            
+            //check for claw close before up and down
             if (gamepad1.y) {
                 claw.spinUp();
             }
