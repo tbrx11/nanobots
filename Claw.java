@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Claw {
@@ -18,9 +19,9 @@ public class Claw {
         this.startPos = 0;
         this.endPos = .5;
 
-        this.spinnerPosDown = 0;
-        this.spinnerPosUp = 1;
-
+        this.spinnerPosDown = .5;
+        this.spinnerPosUp = .1;
+        
 
         this.clawServo.setPosition(startPos);
         this.clawSpinner.setPosition(spinnerPosDown);
@@ -42,6 +43,6 @@ public class Claw {
         clawSpinner.setPosition(spinnerPosDown);
     }
 
-
+     
 
 }
