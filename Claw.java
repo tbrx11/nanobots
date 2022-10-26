@@ -16,14 +16,14 @@ public class Claw {
         this.clawServo = clawServo;
         this.clawSpinner = clawSpinner;
 
-   //values to move servo
+        //values to move servo
         this.startPos = 0;
         this.endPos = .5;
 
         this.spinnerPosDown = .5;
         this.spinnerPosUp = .1;
-        
-    //initial position of servos
+
+        //initial position of servos
         this.clawServo.setPosition(startPos);
         this.clawSpinner.setPosition(spinnerPosDown);
     }
@@ -31,11 +31,11 @@ public class Claw {
     //opens and closes claw
     public void clawOpen(){
         clawServo.setPosition(endPos);
-    } 
+    }
     public void clawClose(){
         clawServo.setPosition(startPos);
     }
-    
+
     // spins claw up and down
     public void spinUp(){
         clawSpinner.setPosition(spinnerPosUp);
@@ -44,6 +44,12 @@ public class Claw {
         clawSpinner.setPosition(spinnerPosDown);
     }
 
-     
+    //checks is claw is closed
+    public boolean isClosed(){
+        if(clawServo.getPosition() == startPos){
+            return true;
+        }
+        return false;
+    }
 
 }
