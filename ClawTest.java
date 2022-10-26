@@ -25,9 +25,7 @@ public class ClawTest extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
+        // Initialize the hardware variables.
         claw = new Claw(hardwareMap.get(Servo.class, "claw"),hardwareMap.get(Servo.class, "spinner"));
                 
 
@@ -46,16 +44,16 @@ public class ClawTest extends LinearOpMode {
                 claw.clawClose();
             }
             
-            //check for claw close before up and down
-            if (gamepad1.y) {
+            //spins claw up and down
+            if (gamepad1.y && claw.isClosed()) {
                 claw.spinUp();
             }
-            if(gamepad1.x) {
+            if(gamepad1.x && claw.isClosed()) {
                 claw.spinDown();
             }
 
 
-            // Show the elapsed game time and wheel power.
+            // Show the elapsed game time
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
         }
