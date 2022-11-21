@@ -20,7 +20,6 @@ public class RobotBrrrr extends LinearOpMode {
     private DcMotor rightBack = null;
     private Claw clawX;
     private Claw clawY;
-    private DcMotor slideX;
     private DcMotor slideY;
     private int spinXpos;
     private int spinYpos;
@@ -44,14 +43,12 @@ public class RobotBrrrr extends LinearOpMode {
 
         clawX = new Claw(hardwareMap.get(Servo.class, "clawX"),hardwareMap.get(Servo.class, "spinnerX"));
         clawY = new Claw(hardwareMap.get(Servo.class, "clawY"),hardwareMap.get(Servo.class, "spinnerY"));
-        slideX = hardwareMap.get(DcMotor.class, "slideX");
         slideY = hardwareMap.get(DcMotor.class, "slideY");
 
         clawX.clawXinit();
         clawY.clawYinit();
 
         //motor direction
-        slideX.setDirection(DcMotor.Direction.REVERSE);
         slideY.setDirection(DcMotor.Direction.REVERSE);
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
@@ -64,8 +61,8 @@ public class RobotBrrrr extends LinearOpMode {
         spinYpos = 0;
         spinXcheck = false;
         spinYcheck = false;
-        clawXpos = 0;
-        clawYpos = 0;
+        clawXpos = 1;
+        clawYpos = 1;
         clawXcheck = false;
         clawYcheck = false;
         precision = 0;
@@ -85,19 +82,10 @@ public class RobotBrrrr extends LinearOpMode {
             //driving code
             double max;
 
-            double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+            double axial   = -gamepad1.left_stick_y;
             double lateral =  gamepad1.left_stick_x;
             double yaw     =  gamepad1.right_stick_x;
-            // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
-            /*
-             * 1) Axial:    Driving forward and backward               Left-joystick Forward/Backward
-             * 2) Lateral:  Strafing right and left                     Left-joystick Right and Left
-             * 3) Yaw:      Rotating Clockwise and counter clockwise    Right-joystick Right and Left
-             */
-            // Combine the joystick requests for each axis-motion to determine each wheel's power.
-            // Set up a variable for each drive wheel to save the power level for telemetry.
-            // Normalize the values so no wheel power exceeds 100%
-            // This ensures that the robot maintains the desired motion
+
             double leftFrontPower  = axial + lateral + yaw;
             double rightFrontPower = axial - lateral - yaw;
             double leftBackPower   = axial - lateral + yaw;
@@ -158,6 +146,7 @@ public class RobotBrrrr extends LinearOpMode {
                 rightBack.setPower(rightBackPower);
             }
 
+            //maybe need a if to see if robot is not moving
             //GAMEPAD2 MICRO-ADJUSTMENTS DRIVING
             if(gamepad2.dpad_up) {
                 leftFront.setPower(.1);
@@ -272,34 +261,8 @@ public class RobotBrrrr extends LinearOpMode {
                 clawYcheck = false;
             }
 
-            //GAMEPAD ! SLIDE CONTROL
-            //slide motor X
-            if(gamepad1.dpad_right){
-                slideX.setPower(.5);
-            }
-            else if(gamepad1.dpad_left) {
-                slideX.setPower(-.5);
-            }
-            else{
-                slideX.setPower(0);
-            }
-
-            //slide motor Y
-            if(gamepad1.dpad_up) {
-                slideY.setPower(.5);
-            }
-            else if(gamepad1.dpad_down) {
-                slideY.setPower(-.5);
-            }
-            else{
-                slideY.setPower(0);
-            }
-
 
             //GAMEPAD 2 SLIDE CONTROL
-            //slide motor X
-            slideX.setPower(gamepad2.left_stick_x/2);
-
             //slide motor Y
             slideY.setPower(-gamepad2.right_stick_y/2);
 
@@ -309,7 +272,7 @@ public class RobotBrrrr extends LinearOpMode {
             telemetry.addData("Front Left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back Left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.addData("Precision mode:", "1/" + precision);
-            telemetry.addData("Slide X/Y", "%4.2f, %4.2f", gamepad2.left_stick_x, gamepad2.right_stick_x);
+            telemetry.addData("Slide Y",  -gamepad2.right_stick_y/2);
             telemetry.addData("Claw opening/closing  x/y:", "%4.2f, %4.2f", clawXpos, clawYpos);
             telemetry.addData("Claw spinning  x/y:", "%4.2f, %4.2f", spinXpos, spinYpos);
             telemetry.update();
