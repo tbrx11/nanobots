@@ -19,7 +19,6 @@ public class ClawSlideTest extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private Claw clawX;
     private Claw clawY;
-    private DcMotor slideX;
     private DcMotor slideY;
     private int spinXpos;
     private int spinYpos;
@@ -39,20 +38,20 @@ public class ClawSlideTest extends LinearOpMode {
         // Initialize the hardware variables.
         clawX = new Claw(hardwareMap.get(Servo.class, "clawX"),hardwareMap.get(Servo.class, "spinnerX"));
         clawY = new Claw(hardwareMap.get(Servo.class, "clawY"),hardwareMap.get(Servo.class, "spinnerY"));
-        slideX = hardwareMap.get(DcMotor.class, "slideX");
         slideY = hardwareMap.get(DcMotor.class, "slideY");
 
         //motor direction
-        slideX.setDirection(DcMotor.Direction.REVERSE);
         slideY.setDirection(DcMotor.Direction.REVERSE);
+        clawX.clawXinit();
+        clawY.clawYinit();
 
         //artifical time and one button rotates
         spinXpos = 0;
         spinYpos = 0;
         spinXcheck = false;
         spinYcheck = false;
-        clawXpos = 0;
-        clawYpos = 0;
+        clawXpos = 1;
+        clawYpos = 1;
         clawXcheck = false;
         clawYcheck = false;
 
@@ -63,7 +62,8 @@ public class ClawSlideTest extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            /* FOR TESTING PURPOSES
+            //FOR TESTING PURPOSES
+            /*
             //claw x
             if(gamepad1.dpad_left){
                 clawX.spinDownX();
@@ -71,12 +71,13 @@ public class ClawSlideTest extends LinearOpMode {
             if(gamepad1.dpad_right){
                 clawX.spinUpX();
             }
-            if(gamepad1.x){
+            if(gamepad1.dpad_up){
                 clawX.clawOpenX();
             }
-            if(gamepad1.a){
+            if(gamepad1.dpad_down){
                 clawX.clawCloseX();
             }
+
 
             // claw y
             if(gamepad1.dpad_up){
@@ -85,10 +86,10 @@ public class ClawSlideTest extends LinearOpMode {
             if(gamepad1.dpad_down){
                 clawY.spinDownY();
             }
-            if(gamepad1.y){
+            if(gamepad1.dpad_left){
                 clawY.clawOpenY();
             }
-            if(gamepad1.b){
+            if(gamepad1.dpad_right){
                 clawY.clawCloseY();
             }
              */
@@ -162,27 +163,16 @@ public class ClawSlideTest extends LinearOpMode {
             }
 
 
-             //slide motor X
-             if(gamepad1.right_trigger > 0) {
-                    slideX.setPower(.5);
-             }
-              else if(gamepad1.left_trigger > 0) {
-                    slideX.setPower(-.5);
-             }
-              else{
-                 slideX.setPower(0);
-             }
-
-             //slide motor Y
-             if(gamepad1.right_bumper) {
-                    slideY.setPower(.5);
-             }
-             else if(gamepad1.left_bumper) {
-                    slideY.setPower(-.5);
-             }
-             else{
-                 slideY.setPower(0);
-             }
+            //slide motor Y
+            if(gamepad1.right_bumper) {
+                slideY.setPower(.5);
+            }
+            else if(gamepad1.left_bumper) {
+                slideY.setPower(-.5);
+            }
+            else{
+                slideY.setPower(0);
+            }
 
 
             // Show the elapsed game time
