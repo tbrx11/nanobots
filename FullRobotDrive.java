@@ -20,7 +20,6 @@ public class FullRobotDrive extends LinearOpMode {
     private DcMotor rightBack = null;
     private Claw clawX;
     private Claw clawY;
-    private DcMotor slideX;
     private DcMotor slideY;
     private int spinXpos;
     private int spinYpos;
@@ -44,14 +43,12 @@ public class FullRobotDrive extends LinearOpMode {
 
         clawX = new Claw(hardwareMap.get(Servo.class, "clawX"),hardwareMap.get(Servo.class, "spinnerX"));
         clawY = new Claw(hardwareMap.get(Servo.class, "clawY"),hardwareMap.get(Servo.class, "spinnerY"));
-        slideX = hardwareMap.get(DcMotor.class, "slideX");
         slideY = hardwareMap.get(DcMotor.class, "slideY");
 
         clawX.clawXinit();
         clawY.clawYinit();
 
         //motor direction
-        slideX.setDirection(DcMotor.Direction.REVERSE);
         slideY.setDirection(DcMotor.Direction.REVERSE);
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
@@ -64,8 +61,8 @@ public class FullRobotDrive extends LinearOpMode {
         spinYpos = 0;
         spinXcheck = false;
         spinYcheck = false;
-        clawXpos = 0;
-        clawYpos = 0;
+        clawXpos = 1;
+        clawYpos = 1;
         clawXcheck = false;
         clawYcheck = false;
         precision = 0;
@@ -226,27 +223,9 @@ public class FullRobotDrive extends LinearOpMode {
             }
 
 
-            //slide motor X
-            if(gamepad1.right_trigger > 0) {
-                slideX.setPower(.5);
-            }
-            else if(gamepad1.left_trigger > 0) {
-                slideX.setPower(-.5);
-            }
-            else{
-                slideX.setPower(0);
-            }
-
             //slide motor Y
-            if(gamepad1.right_bumper) {
-                slideY.setPower(.5);
-            }
-            else if(gamepad1.left_bumper) {
-                slideY.setPower(-.5);
-            }
-            else{
-                slideY.setPower(0);
-            }
+            slideY.setPower(gamepad1.right_trigger/2);
+            slideY.setPower(-gamepad1.left_trigger/2);
 
 
 
@@ -257,6 +236,7 @@ public class FullRobotDrive extends LinearOpMode {
             telemetry.addData("Precision mode:", "1/" + precision);
             telemetry.addData("Claw opening/closing  x/y:", "%4.2f, %4.2f", clawXpos, clawYpos);
             telemetry.addData("Claw spinning  x/y:", "%4.2f, %4.2f", spinXpos, spinYpos);
+            telemetry.addData("Slide Power: ", gamepad1.right_trigger - gamepad1.left_trigger);
             telemetry.update();
         }
     }}
